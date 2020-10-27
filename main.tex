@@ -1,0 +1,54 @@
+\documentclass[12pt,twoside,openany]{report}
+\usepackage[utf8]{inputenc}
+
+\usepackage[a4paper]{geometry}
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+
+\usepackage{hyperref}
+
+\usepackage{titlesec}
+
+\titleformat{\chapter}
+  {\Large\bfseries} % format
+  {}                % label
+  {0pt}             % sep
+  {\huge}           % before-code
+
+\usepackage{graphicx}
+\graphicspath{{images/}}
+\usepackage{float} % to use H option
+
+% loading in math packages
+\usepackage{mathtools}
+\usepackage{amsmath}
+\usepackage{siunitx}
+
+\title{XY model}
+\author{Musso}
+\date{}
+
+
+\begin{document}
+
+\maketitle
+\tableofcontents
+
+
+\chapter{Introduction}
+\input{chapters/introduction.tex}
+
+
+\chapter{XY model}
+\input{chapters/xy.tex}
+
+
+\chapter{Montecarlo simulation}
+\input{chapters/montecarlo.tex}
+
+
+\chapter{Conclusion}
+\input{chapters/conclusion.tex}
+
+
+\end{document}
