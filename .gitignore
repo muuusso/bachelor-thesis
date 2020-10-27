@@ -1,0 +1,8 @@
+papers/
+
+burocracy/
+
+*.aux
+*.log
+*.toc
+*.out
