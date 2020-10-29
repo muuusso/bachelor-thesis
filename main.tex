@@ -1,5 +1,7 @@
 \documentclass[12pt,twoside,openany]{report}
+\usepackage[T1]{fontenc}
 \usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
 
 \usepackage[backend=biber,style=authoryear-ibid]{biblatex}
 \addbibresource{references.bib}
@@ -27,17 +29,74 @@
 \usepackage{amsmath}
 \usepackage{siunitx}
 
-\title{XY model}
-\author{Musso}
-\date{}
+%\title{XY model}
+%\author{Musso}
+%\date{}
 
 
 \begin{document}
 
-\maketitle
+%\maketitle
+
+\begin{titlepage} 
+\newcommand{\HRule}{\rule{\linewidth}{0.5mm}} 
+	  
+\center % Centre everything on the page
+
+%------------------------------------------------
+% Headings
+%------------------------------------------------
+\textsc{\textbf{\LARGE Università degli Studi di Trento}}\\[1.5cm] 
+		 
+		   
+\textsc{\textbf{\Large Dipartimento di Fisica }}\\[0.5cm] 
+		     
+%------------------------------------------------
+% Title
+%------------------------------------------------
+
+\HRule\\[0.4cm]
+	
+{\huge\bfseries XY model}\\[0.1cm] % Title of your document
+
+\HRule\\[1.5cm]
+
+\vfill
+\begin{figure}[h]
+\centering
+\includegraphics[scale=0.18]{logo.png}
+\end{figure}
+
+\vfill
+
+\begin{figure}[h]
+\centering
+\begin{minipage}{0.4\textwidth}
+			    
+\Large
+\textbf{\textit{Author}\\
+	Francesco\\ \textsc{Musso}} % Author's name
+
+\end{minipage}
+\qquad \qquad \qquad
+\begin{minipage}{0.4\textwidth}
+
+\begin{flushright}
+\Large
+\textbf{\textit{Supervisor}\\
+	Prof. Francesco \textsc{Pederiva}} % Supervisor's name
+\end{flushright}
+
+\end{minipage}
+\end{figure}
+
+\vfill
+\textbf{{\Large November 2020}}
+
+\end{titlepage}
+
 
 \tableofcontents
-\addcontentsline{toc}{section}{References}
 
 \chapter{Introduction}
 \input{chapters/introduction.tex}
@@ -54,6 +113,6 @@
 \chapter{Conclusion}
 \input{chapters/conclusion.tex}
 
-\printbibliography
+\printbibliography[heading=bibintoc]
 
 \end{document}
