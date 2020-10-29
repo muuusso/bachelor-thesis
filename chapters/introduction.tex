@@ -1,6 +1,80 @@
-\section{Ising model}
+\section{Lattice models for phase transitions}
+
+A very successfull and general rage of  models in statistical mechanics are the
+ones where the components of a system are allocated on an array of lattice sites,
+where every component interacts only wiht the closest ones to it 
+(\emph{nearest-neighbour interaction}).
+This kind of models turns out to describe well a very broad range of phase 
+transitions including ferromagnetism transitions, gas-liquid and gas-solid 
+transitions, superconductive transitions and so on. \footnote{The foregoing
+discussion is heavily based on ~\textcite{pathria1972statistical} section 12.3}
+
+The case in consideration here will be the one for \emph{ferromagnetic}
+transitions.
+
+Being defined on a lattice means basically a discretization of space, a caveat 
+that fit very well if the system in consideration is a metal whose atoms are 
+situated in a crystal structure. The crystalline nature of metals enables to
+introduce another semplification in this kind of models: considering the atoms
+as harmonic oscillators swingind around the equilibrium point we can neglect the
+kinetic energy of these atoms and considering only the interactions between them.
+It has to be said that this kind of facilitation turns out to be good enough also
+for the other kinds of transitions listed above.
+
+\section{Hamiltonian of ferromagnetic lattice systems}
+
+Being interested in the magnetic interactions of atoms we consider them as a 
+magnetic dipoles having a magnetic moment $\mathbf{\mu}$. Every magnetic dipole
+in the $N$ lattice sites will have a magnitude $\mu = g \mu_B \sqrt{J(J+1)}$, 
+with $g$ being the Landè factor, $\mu_B$ the Bohr magneton and $J$ being the
+total angolar momentum quantum number. The orientations of the magnetic momenta
+is given by the multiplicity of $J$: $(2J+1)$. This magnetic dipoles will interact
+witch each other and will interact with an eventual external field $\mathbf{B}$.
+
+The net magnetization of the system $\overline{M}$ will depend on both the 
+temperature $T$ and the field $B$ ($\overline{M} \equiv \overline{M}(T,B)$). 
+Studying the \emph{spontaneous magnetization} $\overline{M}(0,B)$ of
+a \emph{critical temperature} $T_c$ can be defined as the threshold temperature
+for $\overline{M}(0,B) \neq 0$: above $T_c$ the termal agitation will be to
+big to allow a spontaneous magnetization to form, then at $T_c$ the system will
+perform a \emph{ferromagnetic transition}.
+
+Detailed studies beyond the scope of this tractation have shown that ferromagnetic
+properties arise when $J=\frac{1}{2}$ and so it can be assumed that this kind of 
+phenomena are due to electons spin. Then we can rewrite the magnetic moment as 
+$\mu = 2 \mu_B \sqrt{s(s+1)}$, where $g=2$ is the Landè factor for electrons and
+$s$ is the spin of the electron.
+
+From quantum mechanics considerations \parencite[see][]{bransden2003physics}
+it can be shown that the interaction energy between two electrons can be expressed
+as $K_{ij} \pm J_{ij}$ with $i$ and $j$ being the two indices indicating two
+neighboring electrons. The plus and minus sign are determined based on $S$ the 
+total spin of the the two electron: the plus corresponding to the case $S=0$ and 
+the minus to one with $S=1$, where only $J_{ij}$ is due to the spin configuration.
+
+Then the energy difference between the "parallel" spin configuration and the 
+"antiparallel" spin configuration is
+
+$$\Delta E = E_{\uparrow\uparrow} - E_{\uparrow\downarrow} = -2J_{ij}$$
+
+Defining the scalar product operator of the spin of the two electron as 
+
+$$ \mathbf{s_j} \cdot \mathbf{s_i} = \frac{1}{2} S(S+1) - s(s+1)$$
+
+is easy to show that the interaction energy between the spins can be written as
+
+$$ E_{ij} = \text{const.} - 2J_{ij} (\mathbf{s_i} \cdot \mathbf{s_j})$$
+
+The exact value of the constant is irrilevant since any constant can be added to
+the potential energy. Still from quantum meachanical considerations can be seen
+$J_{ij}$ fall very rapidly with the distance, supporting our initial caveat of
+regarding only the neirest-neighbors interactions.
 
 
 \section{\textit{n}-vector model}
+
+\subsection{Ising Model}
+
+\subsection{Heisenberg Model}
 
 

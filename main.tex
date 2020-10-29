@@ -1,6 +1,9 @@
 \documentclass[12pt,twoside,openany]{report}
 \usepackage[utf8]{inputenc}
 
+\usepackage[backend=biber,style=authoryear-ibid]{biblatex}
+\addbibresource{references.bib}
+
 \usepackage[a4paper]{geometry}
 \usepackage{fancyhdr}
 \pagestyle{fancy}
@@ -32,8 +35,9 @@
 \begin{document}
 
 \maketitle
-\tableofcontents
 
+\tableofcontents
+\addcontentsline{toc}{section}{References}
 
 \chapter{Introduction}
 \input{chapters/introduction.tex}
@@ -50,5 +54,6 @@
 \chapter{Conclusion}
 \input{chapters/conclusion.tex}
 
+\printbibliography
 
 \end{document}

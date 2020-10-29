@@ -6,3 +6,7 @@ burocracy/
 *.log
 *.toc
 *.out
+*.bbl
+*.bcf
+*.blg
+*.run.xml
