@@ -9,12 +9,12 @@ using namespace std;
 const double PI = 4*atan(1);
 
 // numero particelle
-const int N = 512;
+const int N = 216;
 // siti per lato del lattice 3-dimensionale
 const int n = cbrt(N);
 
 // totale passi Monte Carlo
-const int M = 128e3;
+const int M = 64e3;
 // passi di equilibratura
 const int E = 32e3;
 // passi effettivi calcolo osservabili
@@ -90,7 +90,7 @@ tuple<double,double,double,double,double,double> Metropolis (double T, double h)
   double fw_steps;
 
   // osservabili
-  double Ui[m], Mi[m][2];
+  double Ui[m], Mi[m], Mx, My;
   double U2i[m], M2i[m];
 
   // init configurazione random
@@ -155,71 +155,65 @@ tuple<double,double,double,double,double,double> Metropolis (double T, double h)
       // calcolo valori osservabili passo corrente (i)
       Ui[i-E] = H; U2i[i-E] = H*H;
 
-      Mi[i-E][0] = 0; Mi[i-E][1] = 0;
+      Mx = 0; My = 0;
       for (int j=0; j < N; j++)
       {
-        Mi[i-E][0] += cos(s[j/n/n%n][j/n%n][j%n]);
-        Mi[i-E][1] += sin(s[j/n/n%n][j/n%n][j%n]);
+        Mx += cos(s[j/n/n%n][j/n%n][j%n]);
+        My += sin(s[j/n/n%n][j/n%n][j%n]);
       }
 
-      M2i[i-E] = pow(Mi[i-E][0],2) + pow(Mi[i-E][1],2);
+      M2i[i-E] = pow(Mx,2) + pow(My,2);
+      Mi[i-E] = sqrt(M2i[i-E]);
     }
   }
 
-  double U=0, U2=0, Mx=0, My=0, M2=0;
-  double deltaU=0, deltaU2=0, deltaMx=0, deltaMy=0, deltaM2=0;
+  double U=0, U2=0, M=0, M2=0;
+  double deltaU=0, deltaU2=0, deltaM=0, deltaM2=0;
 
   // lunghezza massima calcolo autocorrelazione
   int l = 2000;
 
-  double U0, U20, Mx0, My0, M20;
-  double corrU=0, corrU2=0, corrMx=0, corrMy=0, corrM2=0;
+  double U0, U20, M0, M20;
+  double corrU=0, corrU2=0, corrM=0, corrM2=0;
 
   for (int i=0; i < m; i++)
   {
     // medio valori osservabili
     U += Ui[i] / m; U2 += U2i[i] / m;
-    Mx += Mi[i][0] / m;
-    My += Mi[i][1] / m;
-    M2 += M2i[i] / m;
+    M += Mi[i] / m; M2 += M2i[i] / m;
 
     // punto iniziale correlazione
     if (i % l == 0)
     {
       U0 = Ui[i]; U20 = U2i[i];
-      Mx0 = Mi[i][0];
-      My0 = Mi[i][1];
-      M20 = M2i[i];
+      M0 = Mi[i]; M20 = M2i[i];
     }
 
     // calcolo correlazione e medio
     corrU += U0 * Ui[i] / m;
     corrU2 += U20 * U2i[i] / m;
     
-    corrMx += Mx0 * Mi[i][0] / m;
-    corrMy += My0 * Mi[i][1] / m;
+    corrM += M0 * Mi[i] / m;
     corrM2 += M20 * M2i[i] / m;
   }
 
   deltaU = sqrt(fabs(corrU - pow(U,2))) / sqrt(m-1);
   deltaU2 = sqrt(fabs(corrU2 - pow(U2,2))) / sqrt(m-1);
 
-  deltaMx = sqrt(fabs(corrMx - pow(Mx,2))) / sqrt(m-1);
-  deltaMy = sqrt(fabs(corrMy - pow(My,2))) / sqrt(m-1);
+  deltaM = sqrt(fabs(corrM - pow(M,2))) / sqrt(m-1);
   deltaM2 = sqrt(fabs(corrM2 - pow(M2,2))) / sqrt(m-1);
 
   double Cv, deltaCv;
-  double M, deltaM;
   double Chi, deltaChi;
 
   Cv = (U2 - U*U) / (N * T*T);
   deltaCv = sqrt(pow(deltaU2,2) + pow(2*U*deltaU,2)) / (N * T*T);
 
-  M = sqrt(Mx*Mx + My*My) / N;
-  deltaM = sqrt(Mx*Mx*deltaMx*deltaMx + My*My*deltaMy*deltaMy) / (N*N * M);
+  M = M / N;
+  deltaM = deltaM / N; 
 
-  Chi = (M2 - M*M) / (N * T);
-  deltaChi = sqrt(pow(deltaM2,2) + pow(2*M*deltaM,2)) / (N*T); 
+  Chi = (M2 - pow(M*N,2)) / (N * T);
+  deltaChi = sqrt(pow(deltaM2,2) + pow(2*M*deltaM*N,2)) / (N * T); 
 
   return {Cv,deltaCv,M,deltaM,Chi,deltaChi};
 }
@@ -239,22 +233,32 @@ int main ()
   // range di h / J; J = 1
   double h[3] = {0, 1, 2};
 
-  // temperatura in kB*T (rispetto a J) 
-  // range di kB*T/J; J = 1
-  double T[40] = {1.1, 1.2, 1.3, 1.4, 1.5, 1.6, 1.7, 1.8, 1.9, 2, 
-                  2.1, 2.2, 2.3, 2.4, 2.5, 2.6, 2.7, 2.8, 2.9, 3,
-                  3.1, 3.2, 3.3, 3.4, 3.5, 3.6, 3.7, 3.8, 3.9, 4,
-                  4.1, 4.2, 4.3, 4.4, 4.5, 4.6, 4.7, 4.8, 4.9, 5};
 
   for (int j=0; j < 3; j++)
   {
-    for (int i=0; i < 40; i++)
+    // temperatura in kB*T (rispetto a J) 
+    double T[50];
+
+    T[0] = 1.5;
+    for (int i=1; i < 50; i++)
+    {
+  	  // per h = 0 studio meglio range T [1.5,2.5]
+      if (((h[j] == 0) && (T[i-1] <= 2.5)) ||  
+      // per h = 0 studio meglio range T [1.75,2.75]
+      ((h[j] == 1) && (T[i-1] >= 1.75) && (T[i-1] <= 2.75)) ||
+      // per h = 0 studio meglio range T [2,3]
+      ((h[j] == 2) && (T[i-1] >= 2) && (T[i-1] <= 3)))
+
+      {T[i] = T[i-1] + 0.05;}
+    }
+
+    for (int i=0; i < 50; i++)
     {
       tie(Cv,deltaCv,M,deltaM,Chi,deltaChi) = Metropolis(T[i], h[j]);
 
       tesi << T[i]   << "," << h[j]     << ",";
       tesi << Cv     << "," << deltaCv  << ",";
-      tesi << M      << "," << deltaM   << ";";
+      tesi << M      << "," << deltaM   << ",";
       tesi << Chi    << "," << deltaChi << endl;
     }
   }

@@ -10,3 +10,7 @@ burocracy/
 *.bcf
 *.blg
 *.run.xml
+*.swp
+.ipynb_checkpoints/
+
+code/main
