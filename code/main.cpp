@@ -1,6 +1,7 @@
 #include <cmath>
 #include <fstream>
 #include <iostream>
+#include <string>
 #include <tuple>
 
 #define LOG(x) cout << x << endl;
@@ -8,18 +9,18 @@ using namespace std;
 
 const double PI = 4*atan(1);
 
-// numero particelle
-const int N = 216;
-// siti per lato del lattice 3-dimensionale
-const int n = cbrt(N);
+const unsigned int SEED = 2;
 
 // totale passi Monte Carlo
-const int M = 64e3;
+const int Mc = 200e3;
 // passi di equilibratura
-const int E = 32e3;
+const int E = 10e3;
 // passi effettivi calcolo osservabili
-const int m = M - E;
+const int m = Mc - E;
 
+// numero siti lattice per lato del cubo
+const int L = 6;
+const int N = L*L*L;
 
 // implementazione operatore modulo
 // diverso da operatore remainder % per numeri negativi
@@ -30,7 +31,7 @@ int mod (int i, int n)
 
 
 // calcolo H della configurazione s
-tuple<double,double> computeH(double s[n][n][n], double smc[n][n][n], double J, double h)
+tuple<double,double> computeH(double s[L][L][L], double smc[L][L][L], double J, double h)
 {
   double H=0, Hmc=0;
 
@@ -40,31 +41,59 @@ tuple<double,double> computeH(double s[n][n][n], double smc[n][n][n], double J, 
   for (int j=0; j < N; j++)
   {
     // interazione destra e sinistra
-    H -= J * cos(s[j/n/n%n][j/n%n][j%n] - s[j/n/n%n][j/n%n][mod(j%n-1, n)]);
-    H -= J * cos(s[j/n/n%n][j/n%n][j%n] - s[j/n/n%n][j/n%n][mod(j%n+1, n)]);
+    H -= J * cos(s[j/L/L%L][j/L%L][j%L] - s[j/L/L%L][j/L%L][mod(j%L-1, L)]);
+    H -= J * cos(s[j/L/L%L][j/L%L][j%L] - s[j/L/L%L][j/L%L][mod(j%L+1, L)]);
     // interazione sopra e sotto
-    H -= J * cos(s[j/n/n%n][j/n%n][j%n] - s[j/n/n%n][mod(j/n%n-1, n)][j%n]);
-    H -= J * cos(s[j/n/n%n][j/n%n][j%n] - s[j/n/n%n][mod(j/n%n+1, n)][j%n]);
+    H -= J * cos(s[j/L/L%L][j/L%L][j%L] - s[j/L/L%L][mod(j/L%L-1, L)][j%L]);
+    H -= J * cos(s[j/L/L%L][j/L%L][j%L] - s[j/L/L%L][mod(j/L%L+1, L)][j%L]);
     // interazione dentro e fuori
-    H -= J * cos(s[j/n/n%n][j/n%n][j%n] - s[mod(j/n/n%n-1, n)][j/n%n][j%n]);
-    H -= J * cos(s[j/n/n%n][j/n%n][j%n] - s[mod(j/n/n%n+1, n)][j/n%n][j%n]);
+    H -= J * cos(s[j/L/L%L][j/L%L][j%L] - s[mod(j/L/L%L-1, L)][j/L%L][j%L]);
+    H -= J * cos(s[j/L/L%L][j/L%L][j%L] - s[mod(j/L/L%L+1, L)][j/L%L][j%L]);
 
-    Hmc -= J * cos(smc[j/n/n%n][j/n%n][j%n] - smc[j/n/n%n][j/n%n][mod(j%n-1, n)]);
-    Hmc -= J * cos(smc[j/n/n%n][j/n%n][j%n] - smc[j/n/n%n][j/n%n][mod(j%n+1, n)]);
+    Hmc -= J * cos(smc[j/L/L%L][j/L%L][j%L] - smc[j/L/L%L][j/L%L][mod(j%L-1, L)]);
+    Hmc -= J * cos(smc[j/L/L%L][j/L%L][j%L] - smc[j/L/L%L][j/L%L][mod(j%L+1, L)]);
 
-    Hmc -= J * cos(smc[j/n/n%n][j/n%n][j%n] - smc[j/n/n%n][mod(j/n%n-1, n)][j%n]);
-    Hmc -= J * cos(smc[j/n/n%n][j/n%n][j%n] - smc[j/n/n%n][mod(j/n%n+1, n)][j%n]);
+    Hmc -= J * cos(smc[j/L/L%L][j/L%L][j%L] - smc[j/L/L%L][mod(j/L%L-1, L)][j%L]);
+    Hmc -= J * cos(smc[j/L/L%L][j/L%L][j%L] - smc[j/L/L%L][mod(j/L%L+1, L)][j%L]);
 
-    Hmc -= J * cos(smc[j/n/n%n][j/n%n][j%n] - smc[mod(j/n/n%n-1, n)][j/n%n][j%n]);
-    Hmc -= J * cos(smc[j/n/n%n][j/n%n][j%n] - smc[mod(j/n/n%n+1, n)][j/n%n][j%n]);
+    Hmc -= J * cos(smc[j/L/L%L][j/L%L][j%L] - smc[mod(j/L/L%L-1, L)][j/L%L][j%L]);
+    Hmc -= J * cos(smc[j/L/L%L][j/L%L][j%L] - smc[mod(j/L/L%L+1, L)][j/L%L][j%L]);
 
     // interazione campo magnetico esterno
-    H -= h * cos(s[j/n/n%n][j/n%n][j%n]); 
-    Hmc -= h * cos(smc[j/n/n%n][j/n%n][j%n]); 
+    H -= h * cos(s[j/L/L%L][j/L%L][j%L]); 
+    Hmc -= h * cos(smc[j/L/L%L][j/L%L][j%L]); 
   }
 
   return {H,Hmc};
 }
+
+
+// tuple <double,double> local_molecular_field (double s[L][L][L], int j)
+// {
+//   double Hj[2] = {0};
+  
+//   // destra e sinistra                                              
+//   Hj[0] -= cos(s[j/L/L%L][j/L%L][mod(j%L-1, L)]);      
+//   Hj[0] -= cos(s[j/L/L%L][j/L%L][mod(j%L+1, L)]);      
+//   // sopra e sotto                                                  
+//   Hj[0] -= cos(s[j/L/L%L][mod(j/L%L-1, L)][j%L]);      
+//   Hj[0] -= cos(s[j/L/L%L][mod(j/L%L+1, L)][j%L]);      
+//   // dentro e fuori                                                 
+//   Hj[0] -= cos(s[mod(j/L/L%L-1, L)][j/L%L][j%L]);      
+//   Hj[0] -= cos(s[mod(j/L/L%L+1, L)][j/L%L][j%L]);
+
+//   // destra e sinistra                                              
+//   Hj[1] -= sin(s[j/L/L%L][j/L%L][mod(j%L-1, L)]);      
+//   Hj[1] -= sin(s[j/L/L%L][j/L%L][mod(j%L+1, L)]);      
+//   // sopra e sotto                                                  
+//   Hj[1] -= sin(s[j/L/L%L][mod(j/L%L-1, L)][j%L]);      
+//   Hj[1] -= sin(s[j/L/L%L][mod(j/L%L+1, L)][j%L]);      
+//   // dentro e fuori                                                 
+//   Hj[1] -= sin(s[mod(j/L/L%L-1, L)][j/L%L][j%L]);      
+//   Hj[1] -= sin(s[mod(j/L/L%L+1, L)][j/L%L][j%L]);
+
+//   return {Hj[0], Hj[1]};
+// }
 
 
 tuple<double,double,double,double,double,double> Metropolis (double T, double h)
@@ -73,13 +102,13 @@ tuple<double,double,double,double,double,double> Metropolis (double T, double h)
 
   // vettore configurazione
   // assegno a ogni spin un angolo
-  double s[n][n][n];
+  double s[L][L][L];
   // vettore proposta Monte Carlo 
-  double smc[n][n][n];
+  double smc[L][L][L];
 
   // grandezza tipico proposta passo mc
   // ottimizzo in fase equilibratura
-  double delta = 3. / 180. * PI; // 3°
+  double delta = .1 / 180. * PI; // 3°
 
   // Hamiltoniana, Hamiltoniana proposta mc
   double H, Hmc;
@@ -93,21 +122,24 @@ tuple<double,double,double,double,double,double> Metropolis (double T, double h)
   double Ui[m], Mi[m], Mx, My;
   double U2i[m], M2i[m];
 
+  double Hj[2], sj[2], Hj2;
+  int i, j;
+
   // init configurazione random
-  for (int i=0; i<N; i++)
+  for (i=0; i<N; i++)
   {
     // numero random tra 0 e 2*pi
-    s[i/n/n%n][i/n%n][i%n] = 2*PI * ((double)rand() / RAND_MAX);
+    s[i/L/L%L][i/L%L][i%L] = 2*PI * ((double)rand() / RAND_MAX);
   }
 
   // Monte Carlo loop
-  for (int i=0; i < M; i++)
+  for (i=0; i < Mc; i++)
   {
-    for (int j=0; j < N; j++)
+    for (j=0; j<N; j++) 
     {
       // proposta Monte Carlo
-      smc[j/n/n%n][j/n%n][j%n] = s[j/n/n%n][j/n%n][j%n];
-      smc[j/n/n%n][j/n%n][j%n] += delta*((double) rand()/RAND_MAX - 0.5);
+      smc[j/L/L%L][j/L%L][j%L] = s[j/L/L%L][j/L%L][j%L];
+      smc[j/L/L%L][j/L%L][j%L] += delta*((double) rand()/RAND_MAX - 0.5);
     }
 
     tie(H, Hmc) = computeH(s, smc, J, h);
@@ -123,26 +155,44 @@ tuple<double,double,double,double,double,double> Metropolis (double T, double h)
       // passo accettato, aumento counter
       fw_steps++;
       // aggiorno configurazione
-      for (int j=0; j < N; j++) 
+      for (j=0; j < N; j++) 
       {
-        s[j/n/n%n][j/n%n][j%n] = smc[j/n/n%n][j/n%n][j%n]; 
+        s[j/L/L%L][j/L%L][j%L] = smc[j/L/L%L][j/L%L][j%L]; 
       }
       // aggiorno valore energia
       H = Hmc;
     }
 
+    // // over-relaxation method nella regione critica
+    // if ((T < 2.3) && (T > 2.1) && (h==0) && (L>=4))
+    // {
+    //   for (j=0; j < N; j=j+12)
+    //   {
+    //     tie(Hj[0], Hj[1]) = local_molecular_field(s, j);
+    //     Hj2 = Hj[0]*Hj[0] + Hj[1]*Hj[1];
+
+    //     sj[0] = cos(s[j/L/L%L][j/L%L][j%L]);
+    //     sj[1] = sin(s[j/L/L%L][j/L%L][j%L]);
+        
+    //     sj[0] = -sj[0] + 2*sj[0]*Hj[0]/Hj2*Hj[0];
+    //     sj[1] = -sj[1] + 2*sj[1]*Hj[1]/Hj2*Hj[1];
+
+    //     s[j/L/L%L][j/L%L][j%L] = atan(sj[1]/sj[0]);
+    //   }
+    // }
+
     // fase di equilibratura e correzione delta 
     if (i < E)
     {
-      if (fw_steps > 1000) {fw_steps = 500;}
+      if (fw_steps > 500) {fw_steps = 250;}
 
       // ogni 1000 passi controlla passi accettati su passi fatti
-      if ((i > 0) and (i % 1000 == 0))
+      if ((i > 0) and (i % 500 == 0))
       {
         // cambio delta se passi accettati non in intervallo [35%,65%]
-        if ((fw_steps > 650) or (fw_steps < 350))
+        if ((fw_steps > 325) or (fw_steps < 175))
         {
-          delta = delta*(1 + 0.25*(fw_steps/1000. - 0.5));
+          delta = delta*(1 + (fw_steps/500. - 0.5));
         }
         // reset counter
         fw_steps = 0;
@@ -156,10 +206,10 @@ tuple<double,double,double,double,double,double> Metropolis (double T, double h)
       Ui[i-E] = H; U2i[i-E] = H*H;
 
       Mx = 0; My = 0;
-      for (int j=0; j < N; j++)
+      for (j=0; j < N; j++)
       {
-        Mx += cos(s[j/n/n%n][j/n%n][j%n]);
-        My += sin(s[j/n/n%n][j/n%n][j%n]);
+        Mx += cos(s[j/L/L%L][j/L%L][j%L]);
+        My += sin(s[j/L/L%L][j/L%L][j%L]);
       }
 
       M2i[i-E] = pow(Mx,2) + pow(My,2);
@@ -176,7 +226,7 @@ tuple<double,double,double,double,double,double> Metropolis (double T, double h)
   double U0, U20, M0, M20;
   double corrU=0, corrU2=0, corrM=0, corrM2=0;
 
-  for (int i=0; i < m; i++)
+  for (i=0; i < m; i++)
   {
     // medio valori osservabili
     U += Ui[i] / m; U2 += U2i[i] / m;
@@ -212,8 +262,8 @@ tuple<double,double,double,double,double,double> Metropolis (double T, double h)
   M = M / N;
   deltaM = deltaM / N; 
 
-  Chi = (M2 - pow(M*N,2)) / (N * T);
-  deltaChi = sqrt(pow(deltaM2,2) + pow(2*M*deltaM*N,2)) / (N * T); 
+  Chi = (M2 - M*M*N*N) / (N * T);
+  deltaChi = sqrt(pow(deltaM2*N*N,2) + pow(2*M*deltaM,2)) / (N * T); 
 
   return {Cv,deltaCv,M,deltaM,Chi,deltaChi};
 }
@@ -221,45 +271,64 @@ tuple<double,double,double,double,double,double> Metropolis (double T, double h)
 
 int main ()
 {
+  srand(SEED);
+
   ofstream tesi;
-  tesi.open("tesi.csv");
+  tesi.open("data/" + to_string(L) + ".csv");
   tesi << "Temp,h,Cv,deltaCv,M,deltaM,Chi,deltaChi" << endl;
 
   double Cv, deltaCv;
   double M, deltaM;
   double Chi, deltaChi;
 
-  // campo magnetico esterno costante (rispetto a J)
-  // range di h / J; J = 1
-  double h[3] = {0, 1, 2};
+  double Tc = 2.22;
+  double T, h; int i, j;
 
-
-  for (int j=0; j < 3; j++)
+  // calcolo osservabili al variare di h, a T=Tc 
+  for (i = 0; i < 41; i++)
   {
-    // temperatura in kB*T (rispetto a J) 
-    double T[50];
+    // campo magnetico esterno costante (rispetto a J)
+    h = 0 + i*0.05;
 
-    T[0] = 1.5;
-    for (int i=1; i < 50; i++)
+    tie(Cv,deltaCv,M,deltaM,Chi,deltaChi) = Metropolis(Tc, h);
+
+    tesi << Tc  << "," << h        << ",";
+    tesi << Cv  << "," << deltaCv  << ",";
+    tesi << M   << "," << deltaM   << ",";
+    tesi << Chi << "," << deltaChi << endl;
+  }
+
+  // calcolo osservabili per h = 0
+  for (i = 0; i < 41; i++)
+  {
+    // temperature per h = 0 in kB*T (rispetto a J)
+    T = 1.5 + i*0.05;
+
+    tie(Cv,deltaCv,M,deltaM,Chi,deltaChi) = Metropolis(T, 0);
+
+    tesi << T      << "," << 0.       << ",";
+    tesi << Cv     << "," << deltaCv  << ",";
+    tesi << M      << "," << deltaM   << ",";
+    tesi << Chi    << "," << deltaChi << endl;
+  }
+  
+  // calcolo osservabili a diversi valori di h
+  for (j = 0; j < 2; j++)
+  {
+    h = 1 + j;
+
+    for (i = 0; i < 11; i++)
     {
-  	  // per h = 0 studio meglio range T [1.5,2.5]
-      if (((h[j] == 0) && (T[i-1] <= 2.5)) ||  
-      // per h = 0 studio meglio range T [1.75,2.75]
-      ((h[j] == 1) && (T[i-1] >= 1.75) && (T[i-1] <= 2.75)) ||
-      // per h = 0 studio meglio range T [2,3]
-      ((h[j] == 2) && (T[i-1] >= 2) && (T[i-1] <= 3)))
+      // temperatura in kB*T (rispetto a J) 
+      T = 1.5 + 0.3*i;
 
-      {T[i] = T[i-1] + 0.05;}
-    }
+      tie(Cv,deltaCv,M,deltaM,Chi,deltaChi) = Metropolis(T, h);
 
-    for (int i=0; i < 50; i++)
-    {
-      tie(Cv,deltaCv,M,deltaM,Chi,deltaChi) = Metropolis(T[i], h[j]);
-
-      tesi << T[i]   << "," << h[j]     << ",";
-      tesi << Cv     << "," << deltaCv  << ",";
-      tesi << M      << "," << deltaM   << ",";
-      tesi << Chi    << "," << deltaChi << endl;
+      tesi << T   << "," << h        << ",";
+      tesi << Cv  << "," << deltaCv  << ",";
+      tesi << M   << "," << deltaM   << ",";
+      tesi << Chi << "," << deltaChi << endl;
     }
   }
 }
+

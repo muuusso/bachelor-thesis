@@ -1,0 +1,30 @@
+A theorical analisys of the XY model has been given, starting from its
+generalization the n-vector model, simpler cases have been described such as the
+Ising model. A detailed theorical study of the 2D and 3D cases for the XY model have been
+presented. Monte Carlo simulation theory has been breafly described and has been
+put in practice for the 3D case of the XY model. In the last chapter simulation results
+have been presented.
+
+The results in the third chapter are not good enough to be compared to other
+studies: this is probably due to the fact that near the critical point Monte
+Carlo simulations tends not to perform greatly. They tend up to be stuck in
+local minima of energy and oscillations in those region of temperature are so high
+the averaging process of the algorithm perform much worse than it does in other
+regions. This behaviour is known and there exist a few techniques to avoid this
+from happening. An example could be the over-relaxation method where the value of
+a spin is changed with a different one resulting in the same value of energy: the
+sampler will be oblied to sweep more of the phase space and the likelyhood of 
+being stuck in a local minimum will decrease significantly. To reduce the
+effects of oscillations, averages on slightly different values of temperature
+could be taken e.g. the values of observables at $T=2.2$ could be considered 
+as the average of the values at $T = 2.195$, $T=2.196$ ... $T=2.205$.\footnote{for
+a very detailed work of a Monte Carlo simulation on a GPU for the 3D XY model 
+see \cite{Lan}}
+
+All of these technique are generally computational expensive and the limited
+equipment did not allow to use them. Anyway in the previous chapters the 
+macroscopic behaviour of the XY model has been shown, and even if the values of
+critical exponents are not good enough to be considered as a good estimate, 
+they are good enough to be compared with some experimental values.
+
+

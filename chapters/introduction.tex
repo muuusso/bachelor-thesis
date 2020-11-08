@@ -1,30 +1,30 @@
 \section{Lattice models for phase transitions}
 
-A very successful and general set of models in statistical mechanics are the
-ones where the components of a system are located on an array of lattice sites,
-where every component interacts only wiht the closest ones to it 
+A very successful and general set of models in statistical mechanics is the
+one in which the components of a system are located on an array of lattice sites,
+with every component interacting only with the closest ones
 (\emph{nearest-neighbour interaction}).
 This kind of models turns out to describe well enough a very broad range of phase 
 transitions including ferromagnetism transitions, gas-liquid and gas-solid 
 transitions, superconductive transitions and so on. \footnote{The foregoing
 discussion is heavily based on ~\textcite{pathria1972statistical} section 12.3}
 
-The case in consideration here will be the one for \emph{ferromagnetic}
+The case considered in this dissertation will be the \emph{ferromagnetic}
 transitions.
 
-Being defined on a lattice means basically a discretization of space, a caveat 
-that fit very well if the system unde stydu is a metal whose atoms are almost 
-locked in a crystalline structure. The crystalline nature of metals enables to
+Being defined on a lattice entails a discretization of space, a caveat 
+that fits very well if the system under study is a metal whose atoms are almost 
+locked in a crystalline structure. The crystalline nature of metals allows to
 introduce another semplification in this kind of models: considering the atoms
-as harmonic oscillators swinging around the equilibrium point we can neglect the
-kinetic energy of these atoms and considering only the magnetic interactions
-between them. It has to be said that this kind of facilitation turns out to be 
-adequate also for other kinds of transitions and for very different materials
+as harmonic oscillators swinging around the equilibrium point, their kinetic energy can 
+be neglected and only their magnetic interactions has to be considered. 
+It has to be said that this kind of facilitation turns out to be 
+adequate also for other kinds of transitions and for materials very different 
 from metals.
 
 \section{Hamiltonian of ferromagnetic lattice systems}
 
-Being interested in the magnetic interactions of atoms we consider them as a 
+Being interested only in the magnetic interactions of atoms means that they can be considered as 
 magnetic dipoles having a magnetic moment $\mathbf{\mu}$. Every magnetic dipole
 in the $N$ lattice sites will have a magnitude $\mu = g \mu_B \sqrt{J(J+1)}$, 
 with $g$ being the Landè factor, $\mu_B$ the Bohr magneton and $J$ being the
@@ -35,24 +35,24 @@ external field $\mathbf{B}$.
 
 The net magnetization of the system $\overline{M}$ will depend on both the 
 temperature $T$ and the field $B$ ($\overline{M} \equiv \overline{M}(T,B)$). 
-Studying the \emph{spontaneous magnetization} $\overline{M}(T,0)$ of the system
+Studying the \emph{spontaneous magnetization} $\overline{M}(T,0)$ of the system,
 a \emph{critical temperature} $T_c$ can be defined as the threshold temperature
-for $\overline{M}(T_c,0) \neq 0$ for $T < T_c$: above $T_c$ the termal agitation 
-will be to big to allow a spontaneous magnetization to manifest, then at $T_c$ the
+for $\overline{M}(T_c,0) \neq 0$ for $T < T_c$: above $T_c$ the thermal agitation 
+will be too big to allow a spontaneous magnetization to manifest, then at $T_c$ the
 system will perform a \emph{ferromagnetic transition}.
 
-Detailed studies beyond the scope of this treatment have shown that ferromagnetic
+Detailed studies beyond the scope of this dissertation have shown that ferromagnetic
 properties arise when $J=\frac{1}{2}$ and so it can be assumed that this kind of 
-phenomena are due to electons spin. Then the magnetic moment can be rewritten as 
+phenomena are due to electrons' spin. Then the magnetic moment can be rewritten as 
 $\mu = 2 \mu_B \sqrt{s(s+1)}$, where $g=2$ is the Landè factor for electrons and
 $s$ is the spin of the electron.
 
 From quantum mechanics considerations \parencite[see][]{bransden2003physics}
 it can be shown that the interaction energy between two electrons can be expressed
 as $K_{ij} \pm J_{ij}$ with $i$ and $j$ being the two indices indicating two
-neighboring electrons. The plus and minus sign are determined based on $S$ the 
+neighbouring electrons. The plus and minus sign are determined based on $S$, the 
 total spin of the the two electron: the plus corresponding to the case $S=0$ and 
-the minus to one with $S=1$, where only $J_{ij}$ depends on the spin configuration.
+the minus to one with $S=1$, where only $J_{ij}$ depends on the spins' configuration.
 
 Then the energy difference between the "parallel" spin configuration and the 
 "antiparallel" spin configuration is
@@ -63,48 +63,49 @@ is easy to show that the interaction energy between the spins can be written as
 $$ E_{ij} = \text{const.} - 2J_{ij} (\mathbf{s}_i \cdot \mathbf{s}_j)$$
 
 The exact value of the constant is irrilevant since any constant can be added to
-the potential energy. Still from quantum meachanical considerations can be seen
-that $J_{ij}$ falls very rapidly when the distance beetwen thw two spins increases,
-supporting our initial caveat of regarding only the neirest-neighbors interactions.
+the potential energy. Still from quantum mechanical considerations it can be seen
+that $J_{ij}$ falls very rapidly when the distance beetwen the two spins increases,
+supporting our initial caveat of regarding only the neirest-neighbours interactions.
 
 
-\section{\textit{n}-vector model}
+\section{\textit{n}-vector models}
 
 In statistical mechanics the formalization of the ideas presented in the previous
 sections for ferromagnetic lattice models is the so called \textit{n}-vector model.
-A \textit{n}-vector model is a system of interacting spins on crystalline lattice 
+A \textit{n}-vector model is a system of interacting spins on a crystalline lattice 
 as the ones described above. This formalization was developed by Stanley
-\parencite[see][]{PhysRevLett.20.589} and he was able to show that most of the
-critical proprerties of this kind of systems depends only on the dimension of the
+\parencite[see][]{PhysRevLett.20.589} who was able to show that most of the
+critical properties of this kind of systems depends only on the dimension of the
 lattice and on the dimensionality of the spins in the system.
 
-To put it in a mathematical formal way we have a \textit{n}-vector model when we
-can describe a system composed of \textit{n}-dimensional spins as unit-length
-vectors, located on the sites of $d$ dimensional lattice.
+Fromalized in a mathematical way we have a \textit{n}-vector model when we can 
+describe a system composed of \textit{n}-dimensional spins as unit-length vectors,
+located on the sites of $d$ dimensional lattice.
 
-The evolution of the system is described by the following Hamiltonian
+The evolution of the system is described by the hamiltonian
 \begin{equation}
 	H = - J \sum_{n.n.} \mathbf{s}_i \cdot \mathbf{s}_j
 	\label{eq:ham_nvector}
 \end{equation}
 where the meaning of the symbols follows directly from the one used in the
 previous sections and the subscript $n.n.$ means the summation goes over only
-on the nearest-neighbor spins. 
+on the nearest-neighbour spins. 
 
 Equation~\ref{eq:ham_nvector} shows that \emph{ferromagnetic} phenomena are  
 possible when $J > 0$ since the configuration $\uparrow\uparrow$ is 
-energetically favorable in respect to the $\uparrow\downarrow$ configuration, 
-then otherwise if $J < 0$ \emph{antiferromagnetic} phenomena could arise.
+energetically favorable in respect to the $\uparrow\downarrow$ configuration; 
+if $J < 0$ \emph{antiferromagnetic} phenomena could arise.
 
-Obviously in the presence of an external field the Hamiltonian will be modified
+Obviously in the presence of an external field the hamiltonian will be modified
 in the following way
 \begin{equation}
 \label{eq:ham_field}
 H = - J \sum_{n.n.} \mathbf{s}_i \cdot \mathbf{s}_j - h \sum_i \mathbf{s}_i 
 \end{equation}
-where now $J$ is the $J$ in equation~\ref{eq:ham_nvector} divide by $k_B T$ and $h =
-\mu B / k_B T$, where $B$ is the magnitude of the external magnetic field. As a 
-consequence magnetization properties will depend also on the field.
+where now $J$ is the same as in equation~\ref{eq:ham_nvector} divided by $k_B T$ 
+and $h = \mu B / k_B T$, where $B$ is the magnitude of the external magnetic field. 
+As a consequence of the presence of the field, magnetization properties will also 
+depend on the field itself.
 
 
 \subsection{Ising Model}
@@ -116,27 +117,27 @@ https://en.wikipedia.org/wiki/Ising_model}}
 
 The Ising model is basically the \textit{n}-vector model for $n=1$: the spins
 are considered as a one dimesional vector that can take only two values: up and 
-down. This is simplest physically important case ($n=0$ being of importance merely
+down. This is the simplest physically important case ($n=0$ being of importance merely
 from a mathematical point of view) and was solved analytically in the $d=1$ case by
 Ising in 1924. He showed no transitions can occur in such a model, but it was the
 ground zero for the development of much more complicated models for higher
 dimensions.
 
-In the following years also the case for $d=2$ was solved and transitions were
+In the following years the case for $d=2$ was also solved and transitions were
 shown to be possible. Analytical solutions for higher dimension are still to be
 found, if there are some, and are definitely outside of the scope of this
-treatment. 
+dissertation. 
 
 
 \subsection{Heisenberg Model}
 
 The Heisenberg model is the \textit{n}-vector model for $n=3$ and require a quantum
-mechanical treatment and is obviously the closest one to a description of reality.
-Being more complex as a model means it is a tremendously more difficult problem to 
-tackle and it requires a mathematical and quantum mechanics formalizations called 
+mechanical approach and is obviously the closest one also to a description of reality.
+Being more complex as a model makes it a tremendously more difficult problem to 
+tackle and it requires a mathematical and quantum mechanics formalization called 
 Potts models \footnote{check \url{https://en.wikipedia.org/wiki/Potts_model}} that
 integrates also the \textit{n}-vector models.
 
 The Heisenberg model has multiple apllications in quantum mechanics and it is one
-of the most studied model of magnetism. \footnote{For a detailed view of Heisenberg
+of the most studied models of magnetism. \footnote{For a detailed view of Heisenberg
 model see~\textcite{Nolting2009}} 
