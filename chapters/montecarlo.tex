@@ -7,17 +7,17 @@ results obtained will be illustrated.
 
 \section{Theory}
 
-The main idea of Monte Carlo simulations is to sample a quantity of interest
+The main idea of Monte Carlo simulations is to sample a quantity of interest,
 treating it as a random variable even if in principal this quantity could be
 obtained deterministically. This kind of probabilistic approach, instead of the
-deterministic one, become useful when the deterministic evaluation via numerical
-means becomes impossible. In physics this usually happens when numerical 
+deterministic one, becomes useful when the deterministic evaluation via numerical
+means results impossible. In physics this usually happens when numerical 
 calculations in high dimensions are required, as in evaluation of integrals in 
 multiple dimensions, and the computational cost in time scale as $N^2$ or in 
 gerenal as a higher power of $N$, with $N$ being the number of dimensions.
 
 Monte Carlo methods are based on the law of large numbers and on the central limit
-theorem that states that the expected value of some random variable can be obtained
+theorem which states that the expected value of some random variable can be obtained
 by the sample mean of indipendent samples of the variable. Then the central problem
 of a Monte Carlo algorithm becomes sampling the variables of interest in a
 indipendent and representative way.
@@ -34,13 +34,13 @@ Metropolis-Hastings algorithm. \footnote{Check the original work of the Metropol
 spouses and Rosenbluth (\cite{Metropolis1953}) that inspired the invention of the
 Metropolis-Hastings algorithm} This algorithm samples any random variable
 provided that the probability density function $P(x)$, or a function proportional
-to it, is known. Being  based on a Markov chain implicates every sample is generated
+to it, is known. Being  based on a Markov chain implicates that every sample is generated
 based on the sample generated before, then the sample is accepted or not on 
-probabilistic considerations built on $P(x)$. In the case which the new sample proposal
+probabilistic considerations built on $P(x)$. In case the new sample proposal
 is rejected, the old sample value is retained and counted as a new sample on which
 the values of observables will be computed again.
 
-In the case of a lattice as in the XY model, starting from a random spins' configuration,
+In the case of a lattice, as in the XY model, starting from a random spins' configuration,
 the canonical distribution, coming from canonical ensemble theory, is used to determine which
 configuration utilize to compute observables' values. The canonical
 distribution is defined as
@@ -59,7 +59,7 @@ where the $mc$ suffix means the configuration is the Monte Carlo candidate.
 Then a random number $\eta$ with a uniformal probability distribution between $0$
 and $1$ is picked and the candidate is accepted if $A > \eta$ or rejected viceversa. 
 
-Obtained the new sample (that could easily be the same as the last one) an observable
+Obtained the new sample (that could easily be the same as the previous one) an observable
 value is computed on the configuration. At every step the value of the observable is
 saved, and in the end the average over the step values represents the value desired 
 and the one comparable with experimental results.
@@ -82,24 +82,24 @@ $\sqrt{S_L^2 - \langle f \rangle^2}$.
 \section{Implementation}
 
 The computation of observables values is done in the 3D case, on a cube
-of side $L=6$ and periodic boundaries where applied. The atoms in a ferromagnets are
+of side $L=6$ and periodic boundaries were applied. The atoms in a ferromagnets are
 definitely much more than $L^3 = 216$, then the cube under study can be imagined as 
 a portion of $216$ atoms in the ferromagnet. These atoms will only interact with other
 atoms of the magnet as if they were in an infinite system composed of repeated cubes 
 of $216$ atoms. Then periodic boundaries conditions are applied by making interact
-the most right atoms with the most left ones, as if an other identical cube was
+the most right atoms with the most left ones, as if another identical cube was
 attached on the right of the cube.
 
 Most implementation of the XY model found in higher detailed works usually change one spin
-at every Monte Carlo step: obviously this garantees a higher precision avoiding 
+at every Monte Carlo step: obviously this guarantees a higher precision avoiding 
 higher fluctations on energy values, but it comes with a very big cost in computation. 
 Since the computational power in this case was very limited all of the spin are 
-changed at every step garanteeing a bigger change between a step and an other, 
+changed at every step guaranteeing a bigger change between a step and another, 
 decreasing a lot the correlation between a step and the following one. If the one spin
 strategy would have been implemented it would have taken many steps to obtain a 
 sufficently different configuration to compute observable values on it.
 
-The amount in change of the angle of the spins is determined by a value usually referred as 
+The amount in change of the angle of the spins is determined by a value usually refered as 
 $\Delta$, initialized at $0.1 \degree$. The value of $\Delta$ is the main factor which
 controls the amount of correlation between a step and the next one: if $\Delta$ is too
 big the candidate configuration will be too different from the original one then most
@@ -107,7 +107,7 @@ of the candidate configurations will be discarded and the correlation between st
 be very high. Something similar happens when $\Delta$ is too little: almost every
 candidate configuration will be accepted, but every configuration will still be very
 similar from the one before and again the correlation will be very high. Then this
-kind of correlation can be minimized updating the value of $\Delta$ based on the value
+kind of correlation can be minimized by updating the value of $\Delta$ based on the value
 of the acceptance ratio: if too many steps are accepted it means $\Delta$ is little,
 while in the opposite $\Delta$ will be to big.
 
@@ -149,7 +149,7 @@ $$\ C_v \thicksim (-t)^{-\alpha} \quad \text{for}\ T < T_c$$
 In general $m$ and $h$ are respectively called the \emph{order parameter} and the
 \emph{ordering field}. Here $m$ corresponds to the magnetization squared, and $h$ 
 corresponds to the magnetic field defined as above. The estimate carried here is
-rough because is simply a fit of the function defined above. Usually much more
+rough because it is simply a fit of the function defined above. Usually much more
 sofisticated methods are used such as finite-size scaling methods. \footnote{
 see \cite{1988}}
 
@@ -164,7 +164,7 @@ d \nu = 2 - \alpha = 2 \beta + \gamma = \beta(\delta + 1)
 
 \section{Results}
 
-In the next pages graphs for the squared magnetization and specific heat in respect of
+In the next pages graphs of the squared magnetization and specific heat in respect of
 temperature are shown. It is easy to see the divergence of the specific heat around 
 the critical temperature $T_c \simeq 2.22$. As said before a rough attempt 
 of estimating the critical temperature and the critical exponents, just by
@@ -223,8 +223,8 @@ reported below. Theoretical and experimental values for the model are also
 reported. \footnote{for tables of theoretical and experimental values see \cite
 {pathria1972statistical}}
 
-\begin{center}
-\textbf{Critical exponents}
+\begin{table}[h]
+\resizebox{\textwidth}{!}{
 \begin{tabular}{|c|c|c|c|c|c|}
 \hline
 & $\alpha$ & $\beta$ & $\delta$ & $\gamma$ & $\nu$ \\ \hline
@@ -232,8 +232,8 @@ Theorical values &  & $0.362 \pm 0.012$ & $4.82 \pm 0.12$ & $1.39 \pm 0.01$ & $0
 Experimental values & 0.0-0.2 & 0.3-0.36 & 4.2-4.8 & 4.2-4.8 & 0.62-0.68 \\ \hline
 Monte Carlo simulation & $0.201 \pm 0.004$ & $0.438 \pm 0.001$ & $3.86 \pm 0.09$ & $0.654 \pm 0.008$ & $1.08 \pm 0.03$ \\ \hline
 $\chi^2_r$ & $\simeq 7\cdot 10^5$ & $\simeq 1\cdot 10^{12}$ & $\simeq 3 \cdot 10^{12}$   &  &    \\ \hline
-\end{tabular}
-\end{center} 
+\end{tabular}}
+\end{table}
 
 The values of $\alpha$, $\beta$ and $\delta$ have been obtained directly, while $\gamma$
 and $\nu$ have been obtained by $\alpha$, $\beta$ and $\delta$ with the hyperscale
