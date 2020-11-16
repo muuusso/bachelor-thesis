@@ -17,5 +17,5 @@ code/main
 
 .xmpi
 
-.nav
-.snm
+*.nav
+*.snm

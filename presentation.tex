@@ -92,9 +92,9 @@ H = - J \sum_{n.n.} \mathbf{s}_j \cdot \mathbf{s}_i}
 \column{0.65\textwidth}
 From equation~\ref{eq:ham} we can see that the difference between the two possible
 configurations of neighbouring spins is
-\begin{equation*}
+\begin{equation}
 \Delta E = E_{\uparrow \uparrow} - E_{\uparrow \downarrow} = -2 J
-\end{equation*}
+\end{equation}
 then \emph{ferromagnetic} phemonena could arise if $J > 0$, while  
 \emph{antiferromagnetic} phenomena could happen if $J < 0$.
 
@@ -124,6 +124,8 @@ a disordered phase at high temperatures.
 At high temperatures vortices will form, while at $T < T_c$ vortices will try to
 annihilate with antivortices. 
 
+\vspace{2mm}
+
 Vortices and antivortices formations are clearly visible in the Monte Carlo
 simulation color map of the spin configuration at $k_B T / J = 0.4$ on the right. 
 
@@ -141,7 +143,7 @@ simulation results and theoretical estimates can be compared.
 
 \vspace{5mm}
 
-A ferromagnet-paramagnet phase transition happens at $T_c \simeq 2.22$ and 
+A ferromagnet-paramagnet phase transition happens at $k_B T_c / J \simeq 2.22$ and 
 around this temperature \emph{critical exponents} can be extrapoleted. Critical
 exponents are a useful tool to describe the system behaviour around the critical
 point.
@@ -173,10 +175,10 @@ P = \frac{\exp(-\beta H)}{Z}
 
 \begin{frame}{Markov chain sampler}
 
-It is the algorithm that samples the configurations based on the propability
+It is the algorithm which samples the configurations based on the probability
 function in equation~\ref{eq:canonical}. Starting from a random configuration
 a slightly different one is created and is accepted or not as a new sample
-based on the comparison of the probabilities of the two configuration.
+based on the comparison of the probabilities of the two configurations.
 
 \vspace{3mm}
 
@@ -200,8 +202,8 @@ in 1970 by Hastings, is the first Monte Carlo algorithm invented.
 
 \vspace{3mm}
 
-Based on the Markov chain sampler it means it violates one of the central limit
-theorem hypothesis: the indipendence of the samples.
+Being based on the Markov chain sampler it means it violates one of the central 
+limit theorem hypothesis: the indipendence of the samples.
 
 \vspace{3mm}
 
@@ -216,22 +218,22 @@ error on the function value.
 
 \begin{frame}{Implementation}
 
-The Metropolis-Hastings algorithm is used in 3D case, on a cube of $L=6$. Every
-spin is changed at every step instead of just one, as can be found in most of 
-the previous work, to dicrease computational time and correlation.
+The Metropolis-Hastings algorithm is used here in the 3D case, on a cube of $L=6$.
+Every spin is changed at every step instead of just one, as can be found in most 
+of the previous work, to dicrease computational time and correlation.
 
 \vspace{3mm}
 
 The order of magnitude of the change in the angle of the spin is controlled by
 $\Delta$ in the following way
-\begin{equation*}
+\begin{equation}
 \theta_i^{\text{mc}} = \theta_i + \Delta (\xi - 0.5)
-\end{equation*}
+\end{equation}
 where $\xi$ is a random number with uniform distribution in $[0,1]$.
 
 \end{frame}
 
-\begin{frame}{Implementation}
+\begin{frame}
 
 The configurations of interest are the one at equilibrium, then $10\text{k}$ 
 inital Monte Carlo steps are dedicated to reach equilibrium and to update the
@@ -240,7 +242,7 @@ obtain observable values.
 
 \vspace{5mm}
 
-Values of $C_v$ and $M$ where obtained at different temperatures and different
+Values of $C_{\text{v}}$ and $M$ where obtained at different temperatures and different
 values of the external field $h$. The study is focused on the properties evolution
 near the critical point.
 
@@ -264,7 +266,7 @@ at high temperature.
 \begin{frame}
 
 It is believed, on strong experimental basis, that they do not depend on the
-particular of the physical systema, but only on some general properties:
+particular physical system, but only on some of his general properties:
 \begin{itemize}
 \item the dimensionality of the system
 \item the dimensionality of the spin
@@ -278,9 +280,9 @@ squared and $h$ to external field.
 \vspace{2mm}
 
 An example of a critical exponent could be $\delta$, defined as
-\begin{equation*}
+\begin{equation}
 m \thicksim h^{1/\delta} \quad \text{for}\ T = T_c\ \text{as}\ h \rightarrow 0
-\end{equation*}
+\end{equation}
 
 \end{frame}
 
@@ -291,15 +293,15 @@ m \thicksim h^{1/\delta} \quad \text{for}\ T = T_c\ \text{as}\ h \rightarrow 0
 
 \column{0.5\textwidth}
 
-Graphs of $C_v$ and $M^2$ in respect of $T$, with $h=0$ are reported. The specific
+Graphs of $C_{\text{v}}$ and $M^2$ in respect of $T$, with $h=0$ are reported. The specific
 heat has a divergence around $k_B T_c / J \simeq 2.22$ as expected, while for 
-$T > T_c$ the magnetization rapidly fades off.
+$T > T_c$ the magnetization fades rapidly off.
 
 \vspace{5mm}
 
 Fluctuations in the region of $T < T_c$ are due to the fact that the system tends
 to jump between states which are local minima of the system, so the system is
-stuck in some local minima for quite a few steps. 
+stuck in some local minima for quite few steps. 
 
 \column{0.5\textwidth}
 
@@ -356,8 +358,8 @@ experimental values coming from prevoius works are also reported.
 \hline
 & $\alpha$ & $\beta$ & $\delta$ & $\gamma$ & $\nu$ \\ \hline
 Theorical values &  & $0.362 \pm 0.012$ & $4.82 \pm 0.12$ & $1.39 \pm 0.01$ & $0.705 \pm 0.005$ \\ \hline
-Experimental values & 0.0-0.2 & 0.3-0.36 & 4.2-4.8 & 4.2-4.8 & 0.62-0.68 \\ \hline
-Monte Carlo simulation & $0.201 \pm 0.004$ & $0.438 \pm 0.001$ & $3.86 \pm 0.09$ & $0.654 \pm 0.008$ & $1.08 \pm 0.03$ \\ \hline
+Experimental values & 0.0-0.2 & 0.3-0.36 & 4.2-4.8 & 1.0-1.2 & 0.62-0.68 \\ \hline
+Monte Carlo simulation & $0.201 \pm 0.004$ & $0.438 \pm 0.001$ & $3.86 \pm 0.09$ & $1.08 \pm 0.03$ & $0.654 \pm 0.008$ \\ \hline
 $\chi^2_r$ & $\simeq 7\cdot 10^5$ & $\simeq 1\cdot 10^{12}$ & $\simeq 3 \cdot 10^{12}$   &  &    \\ \hline
 \end{tabular}}
 \end{table}
